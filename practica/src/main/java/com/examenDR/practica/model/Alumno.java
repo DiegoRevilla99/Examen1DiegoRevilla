@@ -24,7 +24,7 @@ public class Alumno {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idAlumno;
     private Long noControl;
-    private char genero;
+    private char genero = 'x';
     private double cintura = 0;
     private double altura = 0;
 

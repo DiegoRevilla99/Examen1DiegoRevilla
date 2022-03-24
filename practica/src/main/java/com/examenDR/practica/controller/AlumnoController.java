@@ -61,7 +61,7 @@ public class AlumnoController {
     public CustomResponse getAlumno(@PathVariable("noControl") Long noControl){
         CustomResponse customResponse = new CustomResponse();
         Alumno alumno = alumnoImplementService.getAlumno(noControl);
-        if(alumno.getAltura() == 0 || alumno.getCintura()== 0 || alumno.getGenero() == '\u0000'){
+        if(alumno.getAltura() == 0 || alumno.getCintura()== 0 || alumno.getGenero() == 'x'){
             customResponse.setHttpCode(400);
             customResponse.setMensaje("No se cuentan con los datos necesarios para realizar el calculo");
             return customResponse;
@@ -69,22 +69,24 @@ public class AlumnoController {
         
         double ica = alumno.getCintura() / alumno.getAltura();
         String nivel = "";
+        
+        
         if(alumno.getGenero() == 'H'){
-            if(ica < 0.34) nivel= "Delgadez severa";
-            else if(ica >= 0.35 && ica < 0.42) nivel = "Delgadez leve";
-            else if(ica >= 0.43 && ica < 0.52) nivel = "Peso normal";
-            else if(ica >= 0.53 && ica < 0.57) nivel = "Sobrepeso";
-            else if(ica >= 0.58 && ica < 0.62) nivel = "Sobrepeso Elevado";
-            else if(ica >= 0.63) nivel = "Obesidad mórbida";
+            if(ica < 0.35) nivel= "Delgadez severa";
+            else if(ica > 0.34 && ica < 0.43) nivel = "Delgadez leve";
+            else if(ica > 0.42 && ica < 0.52) nivel = "Peso normal";
+            else if(ica > 0.52 && ica < 0.58) nivel = "Sobrepeso";
+            else if(ica > 0.57 && ica < 0.63) nivel = "Sobrepeso Elevado";
+            else if(ica > 0.62) nivel = "Obesidad mórbida";
         }
         
         if(alumno.getGenero() == 'M'){
-            if(ica < 0.34) nivel = "Delgadez severa";
-            else if(ica >= 0.35 && ica < 0.41) nivel = "Delgadez leve";
-            else if(ica >= 0.42 && ica < 0.48) nivel = "Peso normal";
-            else if(ica >= 0.49 && ica < 0.53) nivel = "Sobrepeso";
-            else if(ica >= 0.54 && ica < 0.57) nivel = "Sobrepeso Elevado";
-            else if(ica >= 0.58) nivel = "Obesidad mórbida";
+            if(ica < 0.35) nivel = "Delgadez severa";
+            else if(ica > 0.34 && ica < 0.42) nivel = "Delgadez leve";
+            else if(ica > 0.41 && ica < 0.49) nivel = "Peso normal";
+            else if(ica > 0.48 && ica < 0.53) nivel = "Sobrepeso";
+            else if(ica > 0.53 && ica < 0.58) nivel = "Sobrepeso Elevado";
+            else if(ica > 0.57) nivel = "Obesidad mórbida";
         }
         
         List<Object> lista = new ArrayList();
