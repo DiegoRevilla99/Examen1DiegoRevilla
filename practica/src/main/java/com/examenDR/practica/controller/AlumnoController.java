@@ -34,10 +34,12 @@ public class AlumnoController {
     public CustomResponse createAlumno(@RequestBody Alumno alumno){
         CustomResponse customResponse = new CustomResponse();
         
-        if(alumno.getAltura() == 0 || alumno.getCintura()== 0 || alumno.getGenero() == 'x'){
-            customResponse.setHttpCode(400);
-            customResponse.setMensaje("No se cuentan con los datos necesarios para realizar el calculo");
-            return customResponse;
+        Resultado resultado = new Resultado();
+        Alumno alumno1 = alumnoImplementService.getAlumno(alumno.getNoControl());
+        boolean alumnoExiste = false;
+        
+        if(alumno1 != null){
+            alumnoExiste = true;
         }
         
         if(alumno.getNoControl() == null){
@@ -51,6 +53,16 @@ public class AlumnoController {
             customResponse.setMensaje("El numero de control debe tener 8 dígitos");
             return customResponse;
         }
+        if(alumno.getAltura() == 0 && alumno.getCintura()== 0 && alumno.getGenero() == 'x' && alumnoExiste){
+            alumno = alumno1;
+        }
+        else if(alumno.getAltura() == 0 || alumno.getCintura()== 0 || alumno.getGenero() == 'x'){
+                customResponse.setHttpCode(400);
+                customResponse.setMensaje("No se cuentan con los datos necesarios para realizar el calculo");
+                return customResponse; 
+            
+        }
+        
         
         double ica = alumno.getCintura() / alumno.getAltura();
         String nivel = "";
@@ -74,16 +86,10 @@ public class AlumnoController {
             else if(ica > 0.57) nivel = "Obesidad mórbida";
         }
         
-//        List<Object> lista = new ArrayList();
-//        lista.add("ica: " +  ica);
-//        lista.add("nivel: " +  nivel);
-
-        Resultado resultado = new Resultado();
         resultado.setIca(ica);
         resultado.setNivel(nivel);
         customResponse.setData(resultado);
-        
-        
+          
         alumnoImplementService.crearAlumno(alumno);
         return customResponse;
     }

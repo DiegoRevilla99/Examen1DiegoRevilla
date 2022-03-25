@@ -27,9 +27,6 @@ public class AlumnoImplementService implements AlumnoService{
         Alumno alumno1 = alumnoRepository.findByNoControl(alumno.getNoControl());
         
         if(alumno1 != null){
-           //alumno1.setGenero(alumno.getGenero());
-           //alumno1.setAltura(alumno.getAltura());
-           //alumno1.setCintura(alumno.getCintura());
            alumnoRepository.delete(alumno1);
        }
         
